@@ -1,32 +1,32 @@
-{{- if .Values.autoscaling.enabled }}
+{{- if .Values.lavalink.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "djs-bot.fullname" . }}
+  name: {{ include "djs-bot.fullname" . }}-lavalink
   labels:
     {{- include "djs-bot.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "djs-bot.fullname" . }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+    name: {{ include "djs-bot.fullname" . }}-lavalink
+  minReplicas: {{ .Values.lavalink.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.lavalink.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.lavalink.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+          averageUtilization: {{ .Values.lavalink.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.lavalink.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+          averageUtilization: {{ .Values.lavalink.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}

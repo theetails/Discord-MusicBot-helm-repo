@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "djs-bot.fullname" . }}"-" .Values.postgres-db.deployment-name }}
+  labels:
+    {{- include "djs-bot.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.postgres-db..service.type }}
+  ports:
+    - port: {{ .Values.postgres-db..service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "djs-bot.postgres-db.selectorLabels" . | nindent 4 }}

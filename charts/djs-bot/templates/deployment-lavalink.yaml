@@ -1,68 +1,70 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "djs-bot.fullname" . }}
+  name: {{ include "djs-bot.fullname" . }}"-" .Values.lavalink.deployment-name }}
   labels:
     {{- include "djs-bot.labels" . | nindent 4 }}
+    {{- include "djs-bot.lavalink.selectorLabels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.lavalink.autoscaling.enabled }}
+  replicas: {{ .Values.lavalink.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "djs-bot.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- with .Values.lavalink.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "djs-bot.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
+        {{- include "djs-bot.lavalink.selectorLabels" . | nindent 8 }}
+        {{- with .Values.lavalink.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.lavalink.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "djs-bot.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.lavalink.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}"-"{{ .Values.lavalink.deployment-name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml .Values.lavalink.securityContext | nindent 12 }}
+          image: "{{ .Values.lavalink.image.repository }}:{{ .Values.lavalink.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.lavalink.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.lavalink.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.lavalink.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.lavalink.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+            {{- toYaml .Values.lavalink.resources | nindent 12 }}
+          {{- with .Values.lavalink.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
+      {{- with .Values.lavalink.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.lavalink.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.lavalink.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.lavalink.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

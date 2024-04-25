@@ -51,12 +51,25 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Selector labels dashboard
 */}}
-{{- define "djs-bot.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "djs-bot.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- define "djs-bot.dashboard.selectorLabels" -}}
+app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djs-bot.name" .) "-" .Values.dashboard.deployment-name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Selector labels lavalink
+*/}}
+{{- define "djs-bot.lavalink.selectorLabels" -}}
+app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djs-bot.name" .) "-" .Values.lavalink.deployment-name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Selector labels postgres-db
+*/}}
+{{- define "djs-bot.postgres-db.selectorLabels" -}}
+app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djs-bot.name" .) "-" .Values.postgres-db.deployment-name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
