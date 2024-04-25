@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: djs-bot
+  name: djs-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: djs-bot
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: djs-bot
+    spec:
+      containers:
+        - args:
+            - npm
+            - run
+            - start
+          env:
+            - name: CLIENTID
+            - name: CLIENTSECRET
+            - name: DEVUID
+            - name: JWT_SECRET_KEY
+            - name: TOKEN
+          image: djs-bot
+          name: djs-bot
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+            - containerPort: 3001
+              hostPort: 3001
+              protocol: TCP
+          stdin: true
+          tty: true
+          volumeMounts:
+            - mountPath: /djs-bot
+              name: djs-bot-claim0
+          workingDir: /djs-bot
+      restartPolicy: Always
+      volumes:
+        - name: djs-bot-claim0
+          persistentVolumeClaim:
+            claimName: djs-bot-claim0

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: lavalink
+  name: lavalink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: lavalink
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: lavalink
+    spec:
+      containers:
+        - image: fredboat/lavalink:3
+          name: lavalink
+          ports:
+            - containerPort: 2333
+              hostPort: 2333
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/Lavalink/application.yml
+              name: lavalink-claim0
+            - mountPath: /opt/Lavalink/plugins
+              name: lavalink-claim1
+      hostname: docker.lavalink
+      restartPolicy: Always
+      volumes:
+        - name: lavalink-claim0
+          persistentVolumeClaim:
+            claimName: lavalink-claim0
+        - name: lavalink-claim1
+          persistentVolumeClaim:
+            claimName: lavalink-claim1
