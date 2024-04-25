@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "djsBot.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "djsBot.fullname" . }}:{{ .Values.djsBot.service.port }}']
   restartPolicy: Never
