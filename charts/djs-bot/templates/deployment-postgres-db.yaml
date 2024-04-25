@@ -1,70 +1,70 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "djs-bot.fullname" . }}"-" .Values.postgres-db.deployment-name }}
+  name: {{ include "djsBot.fullname" . }}"-" .Values.postgresDb.deploymentName }}
   labels:
-    {{- include "djs-bot.labels" . | nindent 4 }}
-    {{- include "djs-bot.postgres-db.selectorLabels" . | nindent 4 }}
+    {{- include "djsBot.labels" . | nindent 4 }}
+    {{- include "djsBot.postgresDb.selectorLabels" . | nindent 4 }}
 spec:
-  {{- if not .Values.postgres-db.autoscaling.enabled }}
-  replicas: {{ .Values.postgres-db.replicaCount }}
+  {{- if not .Values.postgresDb.autoscaling.enabled }}
+  replicas: {{ .Values.postgresDb.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "djs-bot.selectorLabels" . | nindent 6 }}
+      {{- include "djsBot.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.postgres-db.podAnnotations }}
+      {{- with .Values.postgresDb.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "djs-bot.labels" . | nindent 8 }}
-        {{- include "djs-bot.postgres-db.selectorLabels" . | nindent 8 }}
-        {{- with .Values.postgres-db.podLabels }}
+        {{- include "djsBot.labels" . | nindent 8 }}
+        {{- include "djsBot.postgresDb.selectorLabels" . | nindent 8 }}
+        {{- with .Values.postgresDb.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.postgres-db.imagePullSecrets }}
+      {{- with .Values.postgresDb.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "djs-bot.serviceAccountName" . }}
+      serviceAccountName: {{ include "djsBot.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.postgres-db.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.postgresDb.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-postgres-db
+        - name: {{ printf "%s-%s" .Chart.Name .Values.postgresDb.deploymentName }}
           securityContext:
-            {{- toYaml .Values.postgres-db.securityContext | nindent 12 }}
-          image: "{{ .Values.postgres-db.image.repository }}:{{ .Values.postgres-db.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.postgres-db.image.pullPolicy }}
+            {{- toYaml .Values.postgresDb.securityContext | nindent 12 }}
+          image: "{{ .Values.postgresDb.image.repository }}:{{ .Values.postgresDb.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.postgresDb.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.postgres-db.service.port }}
+              containerPort: {{ .Values.postgresDb.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.postgres-db.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.postgresDb.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.postgres-db.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.postgresDb.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.postgres-db.resources | nindent 12 }}
-          {{- with .Values.postgres-db.volumeMounts }}
+            {{- toYaml .Values.postgresDb.resources | nindent 12 }}
+          {{- with .Values.postgresDb.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.postgres-db.volumes }}
+      {{- with .Values.postgresDb.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.postgres-db.nodeSelector }}
+      {{- with .Values.postgresDb.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.postgres-db.affinity }}
+      {{- with .Values.postgresDb.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.postgres-db.tolerations }}
+      {{- with .Values.postgresDb.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

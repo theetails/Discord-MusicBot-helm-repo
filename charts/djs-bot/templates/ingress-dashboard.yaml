@@ -1,5 +1,5 @@
 {{- if .Values.dashboard.ingress.enabled -}}
-{{- $fullName := include "djs-bot.fullname" . -}}"-" .Values.dashboard.deployment-name -}}
+{{- $fullName := include "djsBot.fullname" . -}}"-" .Values.dashboard.deploymentName -}}
 {{- $svcPort := .Values.dashboard.service.port -}}
 {{- if and .Values.dashboard.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.dashboard.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -17,7 +17,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "djs-bot.labels" . | nindent 4 }}
+    {{- include "djsBot.labels" . | nindent 4 }}
   {{- with .Values.dashboard.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

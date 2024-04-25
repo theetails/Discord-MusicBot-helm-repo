@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "djs-bot.fullname" . }}-dahsboard
+  name: {{ include "djsBot.fullname" . }}"-"{{ .Values.dashboard.deploymentName }}
   labels:
-    {{- include "djs-bot.labels" . | nindent 4 }}
-    {{- include "djs-bot.dashboard.selectorLabels" . | nindent 4 }}
+    {{- include "djsBot.labels" . | nindent 4 }}
+    {{- include "djsBot.dashboard.selectorLabels" . | nindent 4 }}
 spec:
   {{- if not .Values.dashboard.autoscaling.enabled }}
   replicas: {{ .Values.dashboard.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "djs-bot.selectorLabels" . | nindent 6 }}
+      {{- include "djsBot.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.dashboard.podAnnotations }}
@@ -19,8 +19,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "djs-bot.labels" . | nindent 8 }}
-        {{- include "djs-bot.dashboard.selectorLabels" . | nindent 8 }}
+        {{- include "djsBot.labels" . | nindent 8 }}
+        {{- include "djsBot.dashboard.selectorLabels" . | nindent 8 }}
         {{- with .Values.dashboard.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -32,7 +32,7 @@ spec:
       securityContext:
         {{- toYaml .Values.dashboard.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}"-"{{ .Values.dashboard.deployment-name }}
+        - name: {{ printf "%s-%s" .Chart.Name .Values.dashboard.deploymentName }}
           securityContext:
             {{- toYaml .Values.dashboard.securityContext | nindent 12 }}
           image: "{{ .Values.dashboard.image.repository }}:{{ .Values.dashboard.image.tag | default .Chart.AppVersion }}"

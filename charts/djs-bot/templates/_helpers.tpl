@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "djs-bot.name" -}}
+{{- define "djsBot.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "djs-bot.fullname" -}}
+{{- define "djsBot.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "djs-bot.chart" -}}
+{{- define "djsBot.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "djs-bot.labels" -}}
-helm.sh/chart: {{ include "djs-bot.chart" . }}
-{{ include "djs-bot.selectorLabels" . }}
+{{- define "djsBot.labels" -}}
+helm.sh/chart: {{ include "djsBot.chart" . }}
+{{ include "djsBot.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,31 +45,31 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "djs-bot.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "djs-bot.name" . }}
+{{- define "djsBot.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "djsBot.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Selector labels dashboard
 */}}
-{{- define "djs-bot.dashboard.selectorLabels" -}}
-app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djs-bot.name" .) "-" .Values.dashboard.deployment-name }}
+{{- define "djsBot.dashboard.selectorLabels" -}}
+app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djsBot.name" .) "-" .Values.dashboard.deploymentName }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Selector labels lavalink
 */}}
-{{- define "djs-bot.lavalink.selectorLabels" -}}
-app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djs-bot.name" .) "-" .Values.lavalink.deployment-name }}
+{{- define "djsBot.lavalink.selectorLabels" -}}
+app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djsBot.name" .) "-" .Values.lavalink.deploymentName }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Selector labels postgres-db
+Selector labels postgresDb
 */}}
-{{- define "djs-bot.postgres-db.selectorLabels" -}}
-app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djs-bot.name" .) "-" .Values.postgres-db.deployment-name }}
+{{- define "djsBot.postgresDb.selectorLabels" -}}
+app.kubernetes.io/name: app.kubernetes.io/name: {{ print (include "djsBot.name" .) "-" .Values.postgresDb.deploymentName }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

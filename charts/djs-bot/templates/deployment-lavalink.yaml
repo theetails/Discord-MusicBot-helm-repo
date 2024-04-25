@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "djs-bot.fullname" . }}"-" .Values.lavalink.deployment-name }}
+  name: {{ include "djsBot.fullname" . }}- .Values.lavalink.deploymentName }}
   labels:
-    {{- include "djs-bot.labels" . | nindent 4 }}
-    {{- include "djs-bot.lavalink.selectorLabels" . | nindent 4 }}
+    {{- include "djsBot.labels" . | nindent 4 }}
+    {{- include "djsBot.lavalink.selectorLabels" . | nindent 4 }}
 spec:
   {{- if not .Values.lavalink.autoscaling.enabled }}
   replicas: {{ .Values.lavalink.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "djs-bot.selectorLabels" . | nindent 6 }}
+      {{- include "djsBot.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.lavalink.podAnnotations }}
@@ -19,8 +19,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "djs-bot.labels" . | nindent 8 }}
-        {{- include "djs-bot.lavalink.selectorLabels" . | nindent 8 }}
+        {{- include "djsBot.labels" . | nindent 8 }}
+        {{- include "djsBot.lavalink.selectorLabels" . | nindent 8 }}
         {{- with .Values.lavalink.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -29,11 +29,11 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "djs-bot.serviceAccountName" . }}
+      serviceAccountName: {{ include "djsBot.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.lavalink.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}"-"{{ .Values.lavalink.deployment-name }}
+        - name: {{  printf "%s-%s" .Chart.Name .Values.lavalink.deploymentName }}
           securityContext:
             {{- toYaml .Values.lavalink.securityContext | nindent 12 }}
           image: "{{ .Values.lavalink.image.repository }}:{{ .Values.lavalink.image.tag | default .Chart.AppVersion }}"

@@ -1,67 +1,67 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "djs-bot.fullname" . }}
+  name: {{ include "djsBot.fullname" . }}
   labels:
-    {{- include "djs-bot.labels" . | nindent 4 }}
+    {{- include "djsBot.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.djs-bot.autoscaling.enabled }}
-  replicas: {{ .Values.djs-bot.replicaCount }}
+  {{- if not .Values.djsBot.autoscaling.enabled }}
+  replicas: {{ .Values.djsBot.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "djs-bot.selectorLabels" . | nindent 6 }}
+      {{- include "djsBot.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.djs-bot.podAnnotations }}
+      {{- with .Values.djsBot.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "djs-bot.labels" . | nindent 8 }}
-        {{- with .Values.djs-bot.podLabels }}
+        {{- include "djsBot.labels" . | nindent 8 }}
+        {{- with .Values.djsBot.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.djs-bot.imagePullSecrets }}
+      {{- with .Values.djsBot.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
-        {{- toYaml .Values.djs-bot.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.djsBot.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.djs-bot.securityContext | nindent 12 }}
-          image: "{{ .Values.djs-bot.image.repository }}:{{ .Values.djs-bot.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.djs-bot.image.pullPolicy }}
+            {{- toYaml .Values.djsBot.securityContext | nindent 12 }}
+          image: "{{ .Values.djsBot.image.repository }}:{{ .Values.djsBot.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.djsBot.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.djs-bot.service.port }}
+              containerPort: {{ .Values.djsBot.service.port }}
               protocol: TCP
           livenessProbe:
-            {{- toYaml .Values.djs-bot.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.djsBot.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.djs-bot.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.djsBot.readinessProbe | nindent 12 }}
           resources:
-            {{- toYaml .Values.djs-bot.resources | nindent 12 }}
-          {{- with .Values.djs-bot.volumeMounts }}
+            {{- toYaml .Values.djsBot.resources | nindent 12 }}
+          {{- with .Values.djsBot.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.djs-bot.volumes }}
+      {{- with .Values.djsBot.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.djs-bot.nodeSelector }}
+      {{- with .Values.djsBot.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.djs-bot.affinity }}
+      {{- with .Values.djsBot.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.djs-bot.tolerations }}
+      {{- with .Values.djsBot.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "djs-bot.fullname" . }}-dashboard
+  name: {{ include "djsBot.fullname" . }}-dashboard
   labels:
-    {{- include "djs-bot.labels" . | nindent 4 }}
+    {{- include "djsBot.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "djs-bot.fullname" . }}-dashboard
+    name: {{ include "djsBot.fullname" . }}-dashboard
   minReplicas: {{ .Values.dashboard.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.dashboard.autoscaling.maxReplicas }}
   metrics:

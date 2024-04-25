@@ -1,4 +1,4 @@
-  # Default values for djs-bot.
+  # Default values for djsBot.
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
 
@@ -6,7 +6,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 dashboard:
-  deployment-name: "dashboard"
+  deploymentName: "dashboard"
   replicaCount: 1
 
   image:
@@ -109,8 +109,8 @@ dashboard:
 
   affinity: {}
 
-djs-bot:
-  deployment-name: "djs-bot"
+djsBot:
+  deploymentName: "djsBot"
   replicaCount: 1
 
   image:
@@ -198,7 +198,7 @@ djs-bot:
   affinity: {}
 
 lavalink:
-  deployment-name: "lavalink"
+  deploymentName: "lavalink"
   replicaCount: 1
 
   image:
@@ -284,8 +284,8 @@ lavalink:
   tolerations: []
 
   affinity: {}
-postgres-db:
-  deployment-name: "postgres-db"
+postgresDb:
+  deploymentName: "postgresDb"
   replicaCount: 1
 
   image:
