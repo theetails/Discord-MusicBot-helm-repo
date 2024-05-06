@@ -10,8 +10,8 @@ plugins:
 #    another_key: another_value
 lavalink:
   plugins:
-    - dependency: "com.github.lavalink-devs.lavaplayer-youtube-source:plugin:1.0.5"
-      repository: "https://jitpack.io"
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.1.0"
+      repository: "https://maven.lavalink.dev/releases"
   pluginsDir: "./plugins"
   server:
     password: "youshallnotpass"
