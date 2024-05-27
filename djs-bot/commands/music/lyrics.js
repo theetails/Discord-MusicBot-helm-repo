@@ -94,7 +94,7 @@ const command = new SlashCommand()
 		let lyricsData;
 		try {
 			lyricsData = await findLyrics({
-				search_engine: { musixmatch: true, genius: false },
+				search_engine: { musixmatch: true, youtube: true, genius: false },
 				song_title: query,
 			});
 		} catch {
@@ -125,6 +125,7 @@ const command = new SlashCommand()
 		const trackName = lyricsData.trackName;
 		const trackArtist = lyricsData.trackArtist;
 		const artworkUrl = lyricsData.artworkUrl;
+		const searchEngine = lyricsData.searchEngine;
 		const pageLength = 2000;
 		const pages = splitText(lyrics, pageLength);
 
@@ -135,7 +136,7 @@ const command = new SlashCommand()
 			.setTitle(`${trackName} - ${trackArtist}`)
 			.setThumbnail(artworkUrl)
 			.setDescription(pages[currentPage])
-			.setFooter({ text: `Page: ${currentPage + 1}/${pages.length}` });
+			.setFooter({ text: `Page: ${currentPage + 1}/${pages.length} | Search Engine: ${searchEngine}` });
 
 		const but1 = new ButtonBuilder()
 			.setCustomId("prev_interaction")
